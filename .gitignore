@@ -1,3 +1,4 @@
 mongodb://<dbuser>:<dbpassword>@ds155820.mlab.com:55820/heroku_4hrpnhc2
 mongodb://heroku_4hrpnhc2:p7a9r4one22b9jcq1v48uvtc47@ds155820.mlab.com:55820/heroku_4hrpnhc2
 node_modules
+.DS_Store
