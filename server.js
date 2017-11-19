@@ -11,7 +11,7 @@ const app = express();
 
 // Database connection and remove
 mongoose.Promise = Promise;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mongoHeadlines';
+const MONGODB_URI = process.env.MONGOLAB_IVORY_URI || 'mongodb://localhost:27017/mongoHeadlines';
 mongoose.connect(MONGODB_URI);
 var db = mongoose.connection;
 // Article.remove({}, function(err, article) {
