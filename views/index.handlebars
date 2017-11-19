@@ -1,0 +1,27 @@
+<div class="jumbotron text-center">
+  <h1 class="display-3">NBA News</h1>
+  <p class="lead">Get all the latest news from around the NBA!</p>
+  <button id="scrape-button" type="button" class="btn btn-dark">Scrape New Articles</button>
+  <button type="button" class="btn btn-warning">Saved Articles</button>
+</div>
+
+<div class="container">
+	<div class="row">
+		{{#each articles}}
+
+			<div class="col-md-4">
+				<div class="card" style="width: 20rem;">
+				  <img class="card-img-top" src="{{this.photo}}" alt="Article Image">
+				  <div class="card-body">
+				    <a href="{{this.url}}" target="_blank"><h4 class="card-title">{{this.headline}}</h4></a>
+				    <p class="card-text">{{this.summary}}</p>
+				    <button type="button" class="btn btn-dark">Save Article</button>
+				  </div>
+				</div>
+			</div>
+
+		{{/each}}
+	</div>
+</div>
+
+
