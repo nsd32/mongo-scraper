@@ -9,6 +9,8 @@ const Article = require('./models/article');
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 // Database connection and remove
 mongoose.Promise = Promise;
 const MONGODB_URI = process.env.MONGOLAB_IVORY_URI || 'mongodb://localhost:27017/mongoHeadlines';
@@ -103,7 +105,7 @@ app.get('/all', function(req, res) {
 
 
 
-app.listen(3000, function() {
-	console.log('Express app listening on port 3000!')
+app.listen(PORT, function() {
+	console.log('Express app listening on port:' + PORT)
 })
 
