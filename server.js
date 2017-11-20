@@ -1,11 +1,11 @@
 
 const express = require('express');
-const request = require('request');
 const cheerio = require('cheerio');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const Article = require('./models/article');
+const axios = require('axios');
 
 const app = express();
 
@@ -16,11 +16,11 @@ mongoose.Promise = Promise;
 const MONGODB_URI = process.env.MONGOLAB_IVORY_URI || 'mongodb://localhost:27017/mongoHeadlines';
 mongoose.connect(MONGODB_URI);
 var db = mongoose.connection;
-// Article.remove({}, function(err, article) {
-// 	if (err) {
-// 		console.log(err);
-// 	}
-// })
+Article.remove({}, function(err, article) {
+	if (err) {
+		console.log(err);
+	}
+})
 
 
 // Body Parser
@@ -47,8 +47,8 @@ app.get('/all', function(req, res) {
 	// 	res.json(articles);
 	// })
 	// HTTP request scraping html
-	request("http://www.nbcsports.com/nba", (error, response, html) => {
-		var $ = cheerio.load(html);
+	axios.get("http://www.nbcsports.com/nba").then(function(response) {
+		var $ = cheerio.load(response.data);
 
 		$('div.more-headlines__list-item').each(function(i, element) {
 			var headline = $(element).find('div.story__title').children('a').text();
@@ -73,26 +73,30 @@ app.get('/all', function(req, res) {
 			// console.log('Record inserted!');
 			// console.log(JSON.stringify(article, null, 2));
 
-			Article.findOne({ headline: headline }, function(err, headline) {
-				if (err) {
-					console.log(err);
-					return
-				}
+			Article
+			.findOne({ headline: headline })
+			.then(function(headline) {
 
 				if (!headline) {
-					Article.create(article, function(error, article) {
-						if (error) {
-							console.log(error);
-							return;
-						}
-						console.log('Article added!')
+					Article
+					.create(article) 
+					.then(function(article) {
+						console.log('Article Added!')
+						res.send('Scrape Complete');
+						
+					})
+					.catch(function(err) {
+						res.json(err);
 					});
 				} else {
-					console.log('Article already exists!');
+					console.log('Article Already Exists!')
+					res.send('No new articles');
 				}
+
 			});
 
 		})
+		
 	});
 
 	// res.send('updated');

@@ -1,13 +1,13 @@
 $(document).ready(function() {
 
 	$('#scrape-button').click(function() {
-		console.log('hello')
 		$.ajax({
-			type: 'GET', 
-			url: '/all'
+			url: '/all', 
+			method: 'GET'
 		})
 		.then(function() {
 				// this is not reloading the page
+				console.log('hello')
 				location.reload();	
 		});
 	});
