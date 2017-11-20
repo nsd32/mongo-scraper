@@ -43,35 +43,27 @@ app.get('/', function(req, res) {
 });
 
 app.get('/all', function(req, res) {
-	// db.articledata.find(function(err, articles) {
-	// 	res.json(articles);
-	// })
+
 	// HTTP request scraping html
 	axios.get("http://www.nbcsports.com/nba").then(function(response) {
 		var $ = cheerio.load(response.data);
 
 		$('div.more-headlines__list-item').each(function(i, element) {
 			var headline = $(element).find('div.story__title').children('a').text();
-			// console.log(headline);
 
 			var summary = $(element).find('div.story__summary').text();
-			// console.log(summary)
 
 			var url = $(element).find('div.story__title').children('a').attr('href');
-			// console.log(url)
 
 			var photo = $(element).find('div.story__image').find('img').attr('src');
-			// console.log(photo)
 
 			var article = {
 				headline: headline,
 				summary: summary,
 				url: url,
-				photo: photo
+				photo: photo,
+				saved: false
 			}
-
-			// console.log('Record inserted!');
-			// console.log(JSON.stringify(article, null, 2));
 
 			Article
 			.findOne({ headline: headline })
@@ -82,15 +74,14 @@ app.get('/all', function(req, res) {
 					.create(article) 
 					.then(function(article) {
 						console.log('Article Added!')
-						res.send('Scrape Complete');
-						
+						res.send('Scrape Complete')
 					})
 					.catch(function(err) {
 						res.json(err);
 					});
 				} else {
 					console.log('Article Already Exists!')
-					res.send('No new articles');
+					
 				}
 
 			});
@@ -98,14 +89,24 @@ app.get('/all', function(req, res) {
 		})
 		
 	});
-
-	// res.send('updated');
 	
 });
 
+app.put('/saved', function(req, res) {
+	console.log(req.body.id)
+	Article.update({ _id: req.body.id }, { saved: true }) 
+	.then(function(article) {
+		res.json(article)
+		console.log(article)
+	})
+	.catch(function(err) {
+		res.json(err);
+	})
+});
+
 app.get('/saved', function(req, res) {
-	Article.find({}, function(err, articles) {
-		res.render('index', { articles: articles });
+	Article.find({ saved: true }, function(err, articles) {
+		res.render('saved', { articles: articles });
 	});
 });
 

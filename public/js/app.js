@@ -12,10 +12,19 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#save-button').click(function() {
-		// get id so you can update obect to {saved: true} in db
-		console.log($(this).attr('value'));
-		// $.put('/saved')
+	// $('#save-button').click(function() {
+	// 	// get id so you can update obect to {saved: true} in db
+	// 	console.log($(this));
+	// 	// $.put('/saved')
+	// })
+
+	$(document).on('click', '#save-button', function() {
+		var id = $(this).attr('value')
+		$.ajax({
+			url: '/saved',
+			method: 'PUT',
+			data: { id: id }
+		});
 	})
 
 })

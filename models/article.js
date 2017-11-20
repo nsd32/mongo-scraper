@@ -18,6 +18,10 @@ var ArticleSchema = new Schema({
 	photo: {
 		type: String,
 		required: "A photo URL is required"
+	},
+	saved: {
+		type: Boolean,
+		required: true
 	}
 })
 
