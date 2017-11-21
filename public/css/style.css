@@ -7,3 +7,12 @@ body {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 }
+
+#save-button {
+	width: 40%;
+	margin: 0 0 10px 10px;
+}
+
+.card {
+	margin-bottom: 30px;
+}
