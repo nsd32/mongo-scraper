@@ -74,10 +74,10 @@ app.get('/all', function(req, res) {
 					.create(article) 
 					.then(function(article) {
 						console.log('Article Added!')
-						res.send('Scrape Complete')
+						
 					})
 					.catch(function(err) {
-						res.json(err);
+						console.log(err);
 					});
 				} else {
 					console.log('Article Already Exists!')
@@ -86,8 +86,9 @@ app.get('/all', function(req, res) {
 
 			});
 
-		})
-		
+		});
+
+		res.redirect('/')
 	});
 	
 });
