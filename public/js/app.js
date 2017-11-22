@@ -27,6 +27,16 @@ $(document).ready(function() {
 		});
 	});
 
+	$(document).on('click', '#delete-button', function() {
+		$.ajax({
+			url: '/deleteAll',
+			method: 'DELETE'
+		})
+		.then(function() {
+			location.reload();
+		});
+	});
+
 	$(document).on('click', '#unsave-button', function() {
 		var id = $(this).attr('value')
 		console.log(id);

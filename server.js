@@ -11,16 +11,12 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// Database connection and remove
+// Database connection
 mongoose.Promise = Promise;
 const MONGODB_URI = process.env.MONGOLAB_IVORY_URI || 'mongodb://localhost:27017/mongoHeadlines';
 mongoose.connect(MONGODB_URI);
 // var db = mongoose.connection;
-db.Article.remove({}, function(err, article) {
-	if (err) {
-		console.log(err);
-	}
-})
+
 
 
 // Body Parser
@@ -38,6 +34,15 @@ app.use(express.static('public'));
 app.get('/', function(req, res) {
 	db.Article.find({}, function(err, articles) {
 		res.render('index', { articles: articles });
+	});
+});
+
+app.delete('/deleteAll', function(req, res) {
+	db.Article.remove({}, function(err, article) {
+		if (err) {
+			console.log(err);
+		}
+		res.send('Deleted All')
 	});
 });
 
