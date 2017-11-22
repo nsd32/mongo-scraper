@@ -4,8 +4,8 @@ const cheerio = require('cheerio');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
-const Article = require('./models/article');
 const axios = require('axios');
+var db = require('./models')
 
 const app = express();
 
@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 3000;
 mongoose.Promise = Promise;
 const MONGODB_URI = process.env.MONGOLAB_IVORY_URI || 'mongodb://localhost:27017/mongoHeadlines';
 mongoose.connect(MONGODB_URI);
-var db = mongoose.connection;
-Article.remove({}, function(err, article) {
+// var db = mongoose.connection;
+db.Article.remove({}, function(err, article) {
 	if (err) {
 		console.log(err);
 	}
@@ -34,10 +34,9 @@ app.set('view engine', 'handlebars');
 // Telling express to get static files from the public folder
 app.use(express.static('public'));
 
-
 // Routes
 app.get('/', function(req, res) {
-	Article.find({}, function(err, articles) {
+	db.Article.find({}, function(err, articles) {
 		res.render('index', { articles: articles });
 	});
 });
@@ -65,12 +64,12 @@ app.get('/all', function(req, res) {
 				saved: false
 			}
 
-			Article
+			db.Article
 			.findOne({ headline: headline })
 			.then(function(headline) {
 
 				if (!headline) {
-					Article
+					db.Article
 					.create(article) 
 					.then(function(article) {
 						console.log('Article Added!')
@@ -95,7 +94,7 @@ app.get('/all', function(req, res) {
 
 app.put('/saved', function(req, res) {
 	console.log(req.body.id)
-	Article.update({ _id: req.body.id }, { saved: true }) 
+	db.Article.update({ _id: req.body.id }, { saved: true }) 
 	.then(function(article) {
 		res.json(article)
 		console.log(article)
@@ -106,12 +105,33 @@ app.put('/saved', function(req, res) {
 });
 
 app.get('/saved', function(req, res) {
-	Article.find({ saved: true }, function(err, articles) {
+	db.Article.find({ saved: true }, function(err, articles) {
 		res.render('saved', { articles: articles });
 	});
 });
 
+app.put('/unsave', function(req, res) {
+	console.log(req.body.id)
+	db.Article.update({ _id: req.body.id }, { saved: false }) 
+	.then(function(article) {
+		res.json(article)
+		console.log(article)
+	})
+	.catch(function(err) {
+		res.json(err);
+	})
+});
 
+app.put('/note', function(req, res) {
+	db.Article.update({ _id: req.body.id }, { note: req.body.note })
+	.then(function(note) {
+		res.json(note);
+		console.log(note);
+	})
+	.catch(function() {
+		res.json(err);
+	})
+});
 
 
 

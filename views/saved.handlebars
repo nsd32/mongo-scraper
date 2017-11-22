@@ -1,5 +1,6 @@
 <div class="jumbotron text-center">
   <h1 class="display-3">Saved Articles</h1>
+  <a href="/"><button id="back-button" type="button" class="btn btn-dark">Back to Articles</button></a>
   {{!-- <p class="lead">Get all the latest news from around the NBA!</p> --}}
   {{!-- <button id="scrape-button" type="button" class="btn btn-dark">Scrape New Articles</button>
   <button type="button" class="btn btn-warning">Saved Articles</button>
@@ -17,10 +18,36 @@
 				    <a href="{{this.url}}" target="_blank"><h4 class="card-title">{{this.headline}}</h4></a>
 				    <p class="card-text">{{this.summary}}</p>
 				  </div>
-				  <button id="save-button" value="{{this._id}}" type="button" class="btn btn-dark">Save Article</button>
+				  <button id="note-button" value="{{this._id}}" type="button" class="btn btn-warning">Notes</button>
+				  <button id="unsave-button" value="{{this._id}}" type="button" class="btn btn-danger">Unsave</button>
 				</div>
 			</div>
 
 		{{/each}}
 	</div>
 </div>
+
+<div id="note-modal" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Article Notes</h5>
+	        {{!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button> --}}
+	      </div>
+	      <div class="modal-body">
+	        <form>
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">Add Note</label>
+					    <input type="text" class="form-control" id="note">
+					  </div>
+					 </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button id="save-note" type="button" class="btn btn-primary">Save</button>
+	        <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
