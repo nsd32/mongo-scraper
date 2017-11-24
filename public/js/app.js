@@ -87,19 +87,23 @@ $(document).ready(function() {
 		console.log($('#note-modal').attr('value'));
 		var id = $('#note-modal').attr('value');
 		var note = $('#note').val().trim();
-		$.ajax({
-			url: '/notes',
-			method: 'POST',
-			data: { 
-				id: id,
-				note: note 
-			}
-		})
-		.then(function() {
-			// this is not reloading the page
-			console.log('hello')
-			location.reload();	
-		});
+		if (note.length > 1) {
+			$.ajax({
+				url: '/notes',
+				method: 'POST',
+				data: { 
+					id: id,
+					note: note 
+				}
+			})
+			.then(function() {
+				// this is not reloading the page
+				console.log('hello')
+				location.reload();	
+			});
+		} else {
+			alert('Please enter a note!')
+		}
 	});
 
 	// $(document).on('click', '#save-note', function() {
