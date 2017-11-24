@@ -98,7 +98,7 @@ app.get('/all', function(req, res) {
 
 app.put('/saved', function(req, res) {
 	console.log(req.body.id)
-	Article.update({ _id: req.body.id }, { saved: true }) 
+	Article.update({ _id: req.body.id }, { saved: true })
 	.then(function(article) {
 		res.json(article)
 		console.log(article)
@@ -116,7 +116,7 @@ app.get('/saved', function(req, res) {
 
 app.put('/unsave', function(req, res) {
 	console.log(req.body.id)
-	Article.update({ _id: req.body.id }, { saved: false }) 
+	Article.update({ _id: req.body.id }, { saved: false })
 	.then(function(article) {
 		res.json(article)
 		console.log(article)
@@ -126,15 +126,12 @@ app.put('/unsave', function(req, res) {
 	})
 });
 
-app.put('/note', function(req, res) {
-	Article.update({ _id: req.body.id }, { note: req.body.note })
-	.then(function(note) {
-		res.json(note);
-		console.log(note);
-	})
-	.catch(function() {
-		res.json(err);
-	})
+app.post('/notes', function(req, res) {
+	Article.update({ _id: req.body.id }, { $push: { notes: req.body.note }})
+	.then(function() {
+		// res.render('saved', { articles: articles });
+		res.redirect('/saved');
+	});
 });
 
 

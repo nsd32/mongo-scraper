@@ -17,6 +17,7 @@ $(document).ready(function() {
 	// 	console.log($(this));
 	// 	// $.put('/saved')
 	// })
+	//
 
 	$(document).on('click', '#save-button', function() {
 		var id = $(this).attr('value')
@@ -67,18 +68,21 @@ $(document).ready(function() {
 		var id = $('#note-modal').attr('value');
 		var note = $('#note').val().trim();
 		$.ajax({
-			url: '/note',
-			method: 'PUT',
+			url: '/notes',
+			method: 'POST',
 			data: { 
 				id: id,
 				note: note 
 			}
 		})
 		.then(function() {
-				// this is not reloading the page
-				console.log('hello')
-				location.reload();	
+			// this is not reloading the page
+			console.log('hello')
+			location.reload();	
 		});
 	});
 
+	// $(document).on('click', '#save-note', function() {
+	// 	console.log($(this).attr('value'))
+	// })
 });

@@ -22,6 +22,9 @@ var ArticleSchema = new Schema({
 	saved: {
 		type: Boolean,
 		required: true
+	},
+	notes: {
+		type: [String]
 	}
 })
 
