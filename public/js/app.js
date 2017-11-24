@@ -53,13 +53,33 @@ $(document).ready(function() {
 		});
 	});
 
+	// $(document).on('click', '#note-button', function() {
+	// 	$('#note-modal').attr('value', $(this).attr('value'));
+	// 	$('#note-modal').show();
+	// });
+
 	$(document).on('click', '#note-button', function() {
 		$('#note-modal').attr('value', $(this).attr('value'));
-		$('#note-modal').show();
+		var id = $('#note-modal').attr('value')
+		console.log('this is id ' + id);
+		$.ajax({
+			url: '/getnotes/' + id,
+			method: 'GET'
+		})
+		.then(function(data) {
+			console.log(data[0])
+			for (var i = 0; i < data[0].notes.length; i++) {
+				$('#note-body').append('<li>' + data[0].notes[i] + '</li>');
+			}
+			$('#note-modal').show();
+		})
+
+			
 	});
 
 	$(document).on('click', '#close', function() {
 		$('#note-modal').hide();
+		location.reload();
 	});
 
 	$(document).on('click', '#save-note', function() {

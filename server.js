@@ -127,10 +127,19 @@ app.put('/unsave', function(req, res) {
 });
 
 app.post('/notes', function(req, res) {
+	console.log('post id request ' + req.body.id)
 	Article.update({ _id: req.body.id }, { $push: { notes: req.body.note }})
 	.then(function() {
 		// res.render('saved', { articles: articles });
 		res.redirect('/saved');
+	});
+});
+
+app.get('/getnotes/:id', function(req, res) {
+	console.log('req.body.id ' + req.params.id)
+	Article.find({ _id: req.params.id }, function(err, article) {
+		console.log(article)
+		res.json(article)
 	});
 });
 
