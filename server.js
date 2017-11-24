@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const axios = require('axios');
-var db = require('./models')
+const Article = require('./models/article')
 
 const app = express();
 
@@ -32,13 +32,13 @@ app.use(express.static('public'));
 
 // Routes
 app.get('/', function(req, res) {
-	db.Article.find({}, function(err, articles) {
+	Article.find({}, function(err, articles) {
 		res.render('index', { articles: articles });
 	});
 });
 
 app.delete('/deleteAll', function(req, res) {
-	db.Article.remove({}, function(err, article) {
+	Article.remove({}, function(err, article) {
 		if (err) {
 			console.log(err);
 		}
@@ -69,12 +69,11 @@ app.get('/all', function(req, res) {
 				saved: false
 			}
 
-			db.Article
-			.findOne({ headline: headline })
+			Article.findOne({ headline: headline })
 			.then(function(headline) {
 
 				if (!headline) {
-					db.Article
+					Article
 					.create(article) 
 					.then(function(article) {
 						console.log('Article Added!')
@@ -99,7 +98,7 @@ app.get('/all', function(req, res) {
 
 app.put('/saved', function(req, res) {
 	console.log(req.body.id)
-	db.Article.update({ _id: req.body.id }, { saved: true }) 
+	Article.update({ _id: req.body.id }, { saved: true }) 
 	.then(function(article) {
 		res.json(article)
 		console.log(article)
@@ -110,14 +109,14 @@ app.put('/saved', function(req, res) {
 });
 
 app.get('/saved', function(req, res) {
-	db.Article.find({ saved: true }, function(err, articles) {
+	Article.find({ saved: true }, function(err, articles) {
 		res.render('saved', { articles: articles });
 	});
 });
 
 app.put('/unsave', function(req, res) {
 	console.log(req.body.id)
-	db.Article.update({ _id: req.body.id }, { saved: false }) 
+	Article.update({ _id: req.body.id }, { saved: false }) 
 	.then(function(article) {
 		res.json(article)
 		console.log(article)
@@ -128,7 +127,7 @@ app.put('/unsave', function(req, res) {
 });
 
 app.put('/note', function(req, res) {
-	db.Article.update({ _id: req.body.id }, { note: req.body.note })
+	Article.update({ _id: req.body.id }, { note: req.body.note })
 	.then(function(note) {
 		res.json(note);
 		console.log(note);
