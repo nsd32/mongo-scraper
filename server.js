@@ -15,7 +15,10 @@ const PORT = process.env.PORT || 3000;
 mongoose.Promise = Promise;
 const MONGODB_URI = process.env.MONGOLAB_IVORY_URI || 'mongodb://localhost:27017/mongoHeadlines';
 mongoose.connect(MONGODB_URI);
-// var db = mongoose.connection;
+const db = mongoose.connection;
+
+db.on('error', (err) => console.log('Mongoose Error: ', err));
+db.once('open', () => console.log('Mogoose Connection Successful'));
 
 
 
@@ -51,6 +54,7 @@ app.get('/all', function(req, res) {
 	// HTTP request scraping html
 	axios.get("http://www.nbcsports.com/nba").then(function(response) {
 		var $ = cheerio.load(response.data);
+		var count = 0;
 
 		$('div.more-headlines__list-item').each(function(i, element) {
 			var headline = $(element).find('div.story__title').children('a').text();
@@ -73,6 +77,7 @@ app.get('/all', function(req, res) {
 			.then(function(headline) {
 
 				if (!headline) {
+					count++;
 					Article
 					.create(article) 
 					.then(function(article) {
@@ -90,7 +95,6 @@ app.get('/all', function(req, res) {
 			});
 
 		});
-
 		res.redirect('/')
 	});
 	
@@ -130,7 +134,6 @@ app.post('/notes', function(req, res) {
 	console.log('post id request ' + req.body.id)
 	Article.update({ _id: req.body.id }, { $push: { notes: req.body.note }})
 	.then(function() {
-		// res.render('saved', { articles: articles });
 		res.redirect('/saved');
 	});
 });
@@ -142,9 +145,6 @@ app.get('/getnotes/:id', function(req, res) {
 		res.json(article)
 	});
 });
-
-
-
 
 
 app.listen(PORT, function() {

@@ -6,18 +6,9 @@ $(document).ready(function() {
 			method: 'GET'
 		})
 		.then(function() {
-				// this is not reloading the page
-				console.log('hello')
-				location.reload();	
+			location.reload();	
 		});
 	});
-
-	// $('#save-button').click(function() {
-	// 	// get id so you can update obect to {saved: true} in db
-	// 	console.log($(this));
-	// 	// $.put('/saved')
-	// })
-	//
 
 	$(document).on('click', '#save-button', function() {
 		var id = $(this).attr('value')
@@ -34,7 +25,9 @@ $(document).ready(function() {
 			method: 'DELETE'
 		})
 		.then(function() {
+
 			location.reload();
+
 		});
 	});
 
@@ -47,16 +40,12 @@ $(document).ready(function() {
 			data: { id: id }
 		})
 		.then(function() {
-				// this is not reloading the page
-				console.log('hello')
-				location.reload();	
+			
+			console.log('hello')
+			location.reload();	
+
 		});
 	});
-
-	// $(document).on('click', '#note-button', function() {
-	// 	$('#note-modal').attr('value', $(this).attr('value'));
-	// 	$('#note-modal').show();
-	// });
 
 	$(document).on('click', '#note-button', function() {
 		$('#note-modal').attr('value', $(this).attr('value'));
@@ -97,16 +86,15 @@ $(document).ready(function() {
 				}
 			})
 			.then(function() {
-				// this is not reloading the page
-				console.log('hello')
-				location.reload();	
+
+				location.reload();
+
 			});
 		} else {
-			alert('Please enter a note!')
+
+			alert('Please enter a note!');
+
 		}
 	});
 
-	// $(document).on('click', '#save-note', function() {
-	// 	console.log($(this).attr('value'))
-	// })
 });
